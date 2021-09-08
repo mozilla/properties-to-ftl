@@ -18,7 +18,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@fluent/syntax": "^0.17.0",
     "dot-properties": "^1.0.1",
+    "lodash.kebabcase": "^4.1.1",
     "yargs": "^17.1.1"
   },
   "engines": {
