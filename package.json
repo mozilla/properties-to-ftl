@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@fluent/syntax": "^0.17.0",
+    "acorn": "^8.5.0",
     "dot-properties": "^1.0.1",
     "lodash.kebabcase": "^4.1.1",
     "recast": "^0.20.5",
