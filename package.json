@@ -22,6 +22,7 @@
     "dot-properties": "^1.0.1",
     "lodash.kebabcase": "^4.1.1",
     "recast": "^0.20.5",
+    "resolve-chrome-uri": "github:eemeli/resolve-chrome-uri",
     "safe-identifier": "^0.4.2",
     "yargs": "^17.1.1"
   },
