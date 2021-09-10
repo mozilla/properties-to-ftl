@@ -38,6 +38,11 @@ yargs(process.argv.slice(2))
       requiresArg: true,
       type: 'string'
     },
+    dryRun: {
+      alias: 'n',
+      desc: 'Do not write changes to disk',
+      type: 'boolean'
+    },
     root: {
       alias: 'r',
       desc: 'Root of mozilla-central, if not the current working directory',
@@ -85,10 +90,7 @@ yargs(process.argv.slice(2))
     'js <jsPath>',
     'Convert JS files to use Fluent Localization rather than string bundles',
     {},
-    async ({ jsPath, globals, prefix, root = process.cwd() }) => {
-      const code = await transformJs(jsPath, { globals, prefix, root })
-      console.log(code)
-    }
+    ({ jsPath, dryRun }) => transformJs(jsPath, { dryRun })
   )
 
   .command(
