@@ -22,7 +22,7 @@ When migrating legacy messages, multiple things change:
 2. The file's location within `mozilla-central` changes.
 3. Message keys change, and often gain an identifying prefix in addition to being kebab-cased.
 4. The syntax for referring to variables in messages changes.
-5. The JavaScript API for formatting messages changes, and becomes async.
+5. The JavaScript API for formatting messages changes.
 
 To help with the first three, you need to add some metadata comments to each `.properties` file that you're migrating:
 
@@ -54,7 +54,6 @@ All of those files are then modified in-place.
 
 Because so many things change, it's unlikely that the script will catch everything.
 Where possible, a comment `/* L10N-FIXME */` is injected immediately after points in the source that require human attention.
-Additionally, the effects of making functions that contain formatting calls `async` will need to be reviewed.
 
 ## TODO
 
