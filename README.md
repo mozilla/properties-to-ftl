@@ -5,7 +5,16 @@ Effectively, you point it at a JS file in `mozilla-central`,
 and it figures out where and how that file uses messages in `.properties` files,
 and converts those to Fluent `.ftl` files.
 
-## Setup
+## Node.js Setup
+
+You will need `nodejs` (version 14 or greater) to effectively install and run this tool.
+It is recommended that you install `nodejs` via Node Version Manager (`nvm`) to avoid issues with permissions.
+
+The following are installation instructions to install `nodejs` through `nvm`:
+
+https://github.com/nvm-sh/nvm#installing-and-updating
+
+## Properties-to-Fluent Setup
 
 ```ini
 git clone https://github.com/eemeli/properties-to-ftl.git
@@ -13,6 +22,8 @@ cd properties-to-ftl
 npm install
 npm link  # for npx
 ```
+
+_Note_: If you are having troubles getting `npm link` to run due to invalid permissions, please see the `Node.js Setup` section above for troubleshooting.
 
 ## Mapping .properties to .ftl
 
