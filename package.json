@@ -15,7 +15,10 @@
   },
   "homepage": "https://github.com/eemeli/properties-to-ftl#readme",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "git restore test/artifacts",
+    "test": "npm run test:dlu && npm run test:had",
+    "test:dlu": "cd test/artifacts && node ../../cli.js toolkit/mozapps/downloads/DownloadUtils.jsm",
+    "test:had": "cd test/artifacts && node ../../cli.js toolkit/mozapps/downloads/HelperAppDlg.jsm"
   },
   "dependencies": {
     "@fluent/syntax": "^0.17.0",
