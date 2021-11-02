@@ -37,7 +37,7 @@ npm link  # for npx
 
 _Note_: If you are having troubles getting `npm link` to run due to invalid permissions, please see the `Node.js Setup` section above for troubleshooting.
 
-## Mapping .properties to .ftl
+## Migrating .properties to .ftl
 
 When migrating legacy messages, multiple things change:
 
@@ -47,7 +47,8 @@ When migrating legacy messages, multiple things change:
 4. The syntax for referring to variables in messages changes.
 5. The JavaScript API for formatting messages changes.
 
-To help with the first three, you need to add some metadata comments to each `.properties` file that you're migrating:
+To help with the first three, you need to either use the `--ftl-path` and `--ftl-prefix` options
+or add some metadata comments to each `.properties` file that you're migrating:
 
 ```ini
 # FTL path: foo/bar/baz.ftl
@@ -56,6 +57,9 @@ To help with the first three, you need to add some metadata comments to each `.p
 
 These comments don't need to be stored in the repo,
 but keeping them there might help if a properties file is migrated in multiple commits.
+If using the corresponding command-line arguments
+and the `.properties` file is only partially migrated,
+these metadata comments will be added to it automatically.
 
 - The `FTL path` may use either the repo root or the `locales/en-US/` directory as its root.
 - An `FTL prefix` is not required, but if set, may only contain lower-case letters and dashes: `^[a-z-]+$`.
@@ -82,14 +86,7 @@ and the placeholder variables are forced to use `var#` names.
 ## Your Attention is Required
 
 Because so many things change, it's unlikely that the script will catch everything.
-Where possible, a comment `/* L10N-FIXME */` is injected immediately after points in the source that require human attention.
-
-## TODO
-
-- [x] Migration script generator
-- [x] Better variable renaming
-- [x] Remove `.properties` files when empty
-- [ ] Update `jar.mn`
-- [x] Allow targeting `.properties` files directly
-- [x] Tools for mapping `chrome://` references across the repo
-- [ ] Some way of FTL path autodiscovery?
+Where possible, a comment `/* L10N-FIXME */` is injected
+immediately after points in the source that require human attention.
+You will also need to manually make any necessary updates to `jar.mn` manifest files
+if a `.properties` file is removed.
