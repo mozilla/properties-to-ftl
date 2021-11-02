@@ -3,7 +3,7 @@
 This is a hacky tool that mostly works.
 Effectively, you point it at a JS file in `mozilla-central`,
 and it figures out where and how that file uses messages in `.properties` files,
-and converts those to Fluent `.ftl` files.
+and converts those to Fluent `.ftl` files and writes a corresponding migration script.
 
 ## Node.js Setup
 
@@ -13,6 +13,18 @@ It is recommended that you install `nodejs` via Node Version Manager (`nvm`) to 
 The following are installation instructions to install `nodejs` through `nvm`:
 
 https://github.com/nvm-sh/nvm#installing-and-updating
+
+## Python Setup
+
+The helper will generate a Python migration script for non-English locales.
+By default, this script will be formatted with [Black](https://black.readthedocs.io/en/stable/),
+which you may install with:
+
+```
+pip install black
+```
+
+To customize or disable the formatting, use the `--format` CLI argument.
 
 ## Properties-to-Fluent Setup
 
@@ -44,8 +56,10 @@ To help with the first three, you need to add some metadata comments to each `.p
 
 These comments don't need to be stored in the repo,
 but keeping them there might help if a properties file is migrated in multiple commits.
-The `FTL path` may use either the repo root or the default locale's directory as its root.
-An `FTL prefix` is not required, but if set, may only contain lower-case letters and dashes: `^[a-z-]+$`.
+
+- The `FTL path` may use either the repo root or the `locales/en-US/` directory as its root.
+- An `FTL prefix` is not required, but if set, may only contain lower-case letters and dashes: `^[a-z-]+$`.
+  If set, it will be included as a prefix for all FTL message keys.
 
 ## Command-line arguments
 
@@ -68,9 +82,10 @@ Where possible, a comment `/* L10N-FIXME */` is injected immediately after point
 
 ## TODO
 
-- [ ] Migration script generator
-- [ ] Better variable renaming
-- [ ] Remove `.properties` files when empty & update `jar.mn`
+- [x] Migration script generator
+- [x] Better variable renaming
+- [x] Remove `.properties` files when empty
+- [ ] Update `jar.mn`
 - [ ] Allow targeting `.properties` files directly
-- [ ] Tools for mapping `chrome://` references across the repo
+- [x] Tools for mapping `chrome://` references across the repo
 - [ ] Some way of FTL path autodiscovery?
