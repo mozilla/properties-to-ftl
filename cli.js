@@ -25,6 +25,18 @@ yargs(process.argv.slice(2))
       default: 'python -m black',
       type: 'string'
     },
+    ftlPath: {
+      alias: 'p',
+      desc: 'Path to target FTL file',
+      requiresArg: true,
+      type: 'string'
+    },
+    ftlPrefix: {
+      alias: 'x',
+      desc: 'Prefix for Fluent message keys',
+      requiresArg: true,
+      type: 'string'
+    },
     root: {
       alias: 'r',
       desc: 'Root of mozilla-central (usually autodetected)',
