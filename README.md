@@ -75,6 +75,10 @@ XHTML may include `<stringbundle>` elements which are detected (and their source
 and properties files may include `FTL path` references, which are also parsed.
 All of those files are then modified in-place.
 
+When targeting a `.properties` file, all of its strings are migrated to Fluent.
+In this use, JS and XHTML files are not parsed or migrated,
+and the placeholder variables are forced to use `var#` names.
+
 ## Your Attention is Required
 
 Because so many things change, it's unlikely that the script will catch everything.
@@ -86,6 +90,6 @@ Where possible, a comment `/* L10N-FIXME */` is injected immediately after point
 - [x] Better variable renaming
 - [x] Remove `.properties` files when empty
 - [ ] Update `jar.mn`
-- [ ] Allow targeting `.properties` files directly
+- [x] Allow targeting `.properties` files directly
 - [x] Tools for mapping `chrome://` references across the repo
 - [ ] Some way of FTL path autodiscovery?

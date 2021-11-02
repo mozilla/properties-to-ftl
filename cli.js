@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
+import { extname } from 'path'
 import yargs from 'yargs'
 import { forEachPropertiesFile, getInfo } from './lib/get-info.js'
 import { transformJs } from './lib/transform-js.js'
+import { transformProperties } from './lib/transform-properties.js'
 
 yargs(process.argv.slice(2))
   .options({
@@ -38,11 +40,13 @@ yargs(process.argv.slice(2))
   })
 
   .command(
-    '$0 <jsPath>',
-    'Convert JS files to use Fluent Localization rather than string bundles',
+    '$0 <path>',
+    'Convert files to use Fluent Localization rather than string bundles',
     {},
-    ({ bug, jsPath, dryRun, format, root, title }) =>
-      transformJs(jsPath, { bug, dryRun, format, root, title })
+    ({ path, ...options }) =>
+      extname(path) === '.properties'
+        ? transformProperties(path, options)
+        : transformJs(path, options)
   )
 
   .command(
