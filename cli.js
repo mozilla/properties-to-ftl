@@ -17,6 +17,12 @@ yargs(process.argv.slice(2))
       desc: 'Do not write changes to disk',
       type: 'boolean'
     },
+    format: {
+      alias: 'f',
+      desc: "Command for Python code formatter. Set to '' to disable.",
+      default: 'python -m black',
+      type: 'string'
+    },
     root: {
       alias: 'r',
       desc: 'Root of mozilla-central (usually autodetected)',
@@ -35,8 +41,8 @@ yargs(process.argv.slice(2))
     '$0 <jsPath>',
     'Convert JS files to use Fluent Localization rather than string bundles',
     {},
-    ({ bug, jsPath, dryRun, root, title }) =>
-      transformJs(jsPath, { bug, dryRun, root, title })
+    ({ bug, jsPath, dryRun, format, root, title }) =>
+      transformJs(jsPath, { bug, dryRun, format, root, title })
   )
 
   .command(
