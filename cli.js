@@ -6,6 +6,12 @@ import { transformJs } from './lib/transform-js.js'
 
 yargs(process.argv.slice(2))
   .options({
+    bug: {
+      alias: 'b',
+      desc: 'Bugzilla bug id',
+      requiresArg: true,
+      type: 'string'
+    },
     dryRun: {
       alias: 'n',
       desc: 'Do not write changes to disk',
@@ -16,6 +22,12 @@ yargs(process.argv.slice(2))
       desc: 'Root of mozilla-central (usually autodetected)',
       requiresArg: true,
       type: 'string'
+    },
+    title: {
+      alias: 't',
+      desc: 'Title for migration script name',
+      requiresArg: true,
+      type: 'string'
     }
   })
 
@@ -23,7 +35,8 @@ yargs(process.argv.slice(2))
     '$0 <jsPath>',
     'Convert JS files to use Fluent Localization rather than string bundles',
     {},
-    ({ jsPath, dryRun, root }) => transformJs(jsPath, { dryRun, root })
+    ({ bug, jsPath, dryRun, root, title }) =>
+      transformJs(jsPath, { bug, dryRun, root, title })
   )
 
   .command(
