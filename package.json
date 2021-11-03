@@ -1,19 +1,24 @@
 {
   "name": "properties-to-ftl",
   "version": "0.0.1",
-  "description": "",
+  "private": true,
+  "description": "Migrate strings from .properties to Fluent in mozilla-central",
   "author": "Eemeli Aro <eemeli@mozilla.com>",
   "license": "MPL-2.0",
   "bin": "cli.js",
   "type": "module",
+  "files": [
+    "cli.js",
+    "lib/"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eemeli/properties-to-ftl.git"
+    "url": "git+https://github.com/mozilla/properties-to-ftl.git"
   },
   "bugs": {
-    "url": "https://github.com/eemeli/properties-to-ftl/issues"
+    "url": "https://github.com/mozilla/properties-to-ftl/issues"
   },
-  "homepage": "https://github.com/eemeli/properties-to-ftl#readme",
+  "homepage": "https://github.com/mozilla/properties-to-ftl#readme",
   "scripts": {
     "clean": "git clean -fx test/artifacts && git restore test/artifacts",
     "test": "npm run test:dlu && npm run test:had",

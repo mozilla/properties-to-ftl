@@ -70,6 +70,6 @@ yargs(process.argv.slice(2))
 
   .help()
   .epilogue(
-    'For more information, see: https://github.com/eemeli/properties-to-ftl'
+    'For more information, see: https://github.com/mozilla/properties-to-ftl'
   )
   .parse()

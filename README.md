@@ -29,7 +29,7 @@ To customize or disable the formatting, use the `--format` CLI argument.
 ## Properties-to-Fluent Setup
 
 ```ini
-git clone https://github.com/eemeli/properties-to-ftl.git
+git clone https://github.com/mozilla/properties-to-ftl.git
 cd properties-to-ftl
 npm install
 npm link  # for npx
