@@ -26,7 +26,7 @@
     "test:had": "cd test/artifacts && node ../../cli.js toolkit/mozapps/downloads/HelperAppDlg.jsm"
   },
   "dependencies": {
-    "@fluent/syntax": "^0.17.0",
+    "@fluent/syntax": "^0.18.0",
     "acorn": "^8.5.0",
     "dot-properties": "^1.0.1",
     "lodash.kebabcase": "^4.1.1",
