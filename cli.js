@@ -14,11 +14,6 @@ yargs(process.argv.slice(2))
       requiresArg: true,
       type: 'string'
     },
-    dryRun: {
-      alias: 'n',
-      desc: 'Do not write changes to disk',
-      type: 'boolean'
-    },
     format: {
       alias: 'f',
       desc: "Command for Python code formatter. Set to '' to disable.",
