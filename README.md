@@ -1,11 +1,19 @@
 # Mozilla Properties-to-Fluent Migration Helper
 
-This is a hacky tool that mostly works.
-Effectively, you point it at a JS file in `mozilla-central`,
-and it figures out where and how that file uses messages in `.properties` files,
-and converts those to Fluent `.ftl` files and writes a corresponding migration script.
+This tool is intended to help automate most parts of moving messages
+from `.properties` files in `mozilla-central` to Fluent `.ftl` files.
+On the way there, it can also update `.js`, `.jsm` and `.xhtml` files that use these messages,
+as well as writing a `.py` migration script for non-English locales.
 
-## Node.js Setup
+Because this migration includes a move from indexed to named placeholders/variables,
+it's run as a two-step process.
+On the first run, a `.migration.yaml` config file is generated next to each `.properties` file.
+This may then be manually verified and updated before running the same command again,
+which then applies the full migration.
+
+## Install & Setup
+
+### Node.js
 
 You will need `nodejs` (version 14 or greater) to effectively install and run this tool.
 It is recommended that you install `nodejs` via Node Version Manager (`nvm`) to avoid issues with permissions.
@@ -14,7 +22,7 @@ The following are installation instructions to install `nodejs` through `nvm`:
 
 https://github.com/nvm-sh/nvm#installing-and-updating
 
-## Python Setup
+### Python
 
 The helper will generate a Python migration script for non-English locales.
 By default, this script will be formatted with [Black](https://black.readthedocs.io/en/stable/),
@@ -26,7 +34,7 @@ pip install black
 
 To customize or disable the formatting, use the `--format` CLI argument.
 
-## Properties-to-Fluent Setup
+### Properties-to-Fluent
 
 ```ini
 git clone https://github.com/mozilla/properties-to-ftl.git
@@ -35,9 +43,11 @@ npm install
 npm link  # for npx
 ```
 
+After this setup, the script may be run from anywhere as `npx properties-to-ftl`.
+
 _Note_: If you are having troubles getting `npm link` to run due to invalid permissions, please see the `Node.js Setup` section above for troubleshooting.
 
-## Migrating .properties to .ftl
+## Usage
 
 When migrating legacy messages, multiple things change:
 
@@ -65,7 +75,11 @@ these metadata comments will be added to it automatically.
 - An `FTL prefix` is not required, but if set, may only contain lower-case letters and dashes: `^[a-z-]+$`.
   If set, it will be included as a prefix for all FTL message keys.
 
-## Command-line arguments
+On the first run, a `.migration.yaml` config file is generated next to each `.properties` file.
+This may then be manually verified and updated before running the same command again,
+which then applies the full migration.
+
+### Command-line arguments
 
 For full usage, run this somewhere in `mozilla-central`:
 
@@ -77,16 +91,21 @@ When targeting a JS file, it is parsed for `chrome://` references to `.propertie
 which are then parsed in turn.
 XHTML may include `<stringbundle>` elements which are detected (and their source `.properties` also parsed),
 and properties files may include `FTL path` references, which are also parsed.
-All of those files are then modified in-place.
+All of those files are then modified in-place
+once the migration config has been reviewed and the CLI command is run again.
 
 When targeting a `.properties` file, all of its strings are migrated to Fluent.
 In this use, JS and XHTML files are not parsed or migrated,
 and the placeholder variables are forced to use `var#` names.
+These should be individually fixed in the mogration config; they will have `# FIXME` comments.
 
-## Your Attention is Required
+### Your Attention is Required
 
 Because so many things change, it's unlikely that the script will catch everything.
 Where possible, a comment `/* L10N-FIXME */` is injected
-immediately after points in the source that require human attention.
+immediately after points in the JS source that require human attention.
+
 You will also need to manually make any necessary updates to `jar.mn` manifest files
 if a `.properties` file is removed.
+Migration config files should not be added to the soruce repository;
+they may be safely removed at the end of the migration.
