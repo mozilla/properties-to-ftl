@@ -34,6 +34,7 @@ yargs(process.argv.slice(2))
     },
     ignore: {
       alias: 'i',
+      default: [],
       desc: '.properties files to ignore; should match the file path end',
       requiresArg: true,
       type: 'array'
