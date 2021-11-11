@@ -8,6 +8,12 @@ import { transformProperties } from './lib/transform-properties.js'
 
 yargs(process.argv.slice(2))
   .options({
+    all: {
+      alias: 'a',
+      default: false,
+      desc: 'When given a JS file, migrate all messages in .properties file',
+      type: 'boolean'
+    },
     bug: {
       alias: 'b',
       desc: 'Bugzilla bug id',
