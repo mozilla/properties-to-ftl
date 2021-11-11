@@ -32,6 +32,12 @@ yargs(process.argv.slice(2))
       requiresArg: true,
       type: 'string'
     },
+    ignore: {
+      alias: 'i',
+      desc: '.properties files to ignore; should match the file path end',
+      requiresArg: true,
+      type: 'array'
+    },
     root: {
       alias: 'r',
       desc: 'Root of mozilla-central (usually autodetected)',
