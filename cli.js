@@ -43,12 +43,6 @@ yargs(process.argv.slice(2))
       desc: 'Root of mozilla-central (usually autodetected)',
       requiresArg: true,
       type: 'string'
-    },
-    title: {
-      alias: 't',
-      desc: 'Title for migration script name',
-      requiresArg: true,
-      type: 'string'
     }
   })
 
