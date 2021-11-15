@@ -45,6 +45,12 @@ yargs(process.argv.slice(2))
       requiresArg: true,
       type: 'array'
     },
+    'js-only': {
+      alias: 'j',
+      default: false,
+      desc: 'Only migrate JS file',
+      type: 'boolean'
+    },
     root: {
       alias: 'r',
       desc: 'Root of mozilla-central (usually autodetected)',
