@@ -50,6 +50,12 @@ yargs(process.argv.slice(2))
       desc: 'Root of mozilla-central (usually autodetected)',
       requiresArg: true,
       type: 'string'
+    },
+    strict: {
+      alias: 's',
+      default: false,
+      desc: 'In JS, require string literals matching message keys to be detected as known method arguments',
+      type: 'boolean'
     }
   })
 
