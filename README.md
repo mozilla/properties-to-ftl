@@ -66,7 +66,7 @@ or add some metadata comments to each `.properties` file that you're migrating:
 ```
 
 These comments don't need to be stored in the repo,
-but keeping them there might help if a properties file is migrated in multiple commits.
+but keeping them there might help if a properties file is migrated in multiple patches.
 If using the corresponding command-line arguments
 and the `.properties` file is only partially migrated,
 these metadata comments will be added to it automatically.
@@ -97,13 +97,18 @@ once the migration config has been reviewed and the CLI command is run again.
 When targeting a `.properties` file, all of its strings are migrated to Fluent.
 In this use, JS and XHTML files are not parsed or migrated,
 and the placeholder variables are forced to use `var#` names.
-These should be individually fixed in the mogration config; they will have `# FIXME` comments.
+These should be individually fixed in the migration config; they will have `# FIXME` comments.
 
 ### Your Attention is Required
 
 Because so many things change, it's unlikely that the script will catch everything.
 Where possible, a comment `/* L10N-FIXME */` is injected
 immediately after points in the JS source that require human attention.
+
+In the generated FTL file, particular care should be given to reviewing the comments,
+which will at least approximate the recommended
+[metadata structurefor placeholders](https://firefox-source-docs.mozilla.org/l10n/fluent/review.html#comments),
+but may not match exactly or be complete.
 
 You will also need to manually make any necessary updates to `jar.mn` manifest files
 if a `.properties` file is removed.
