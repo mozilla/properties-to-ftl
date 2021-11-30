@@ -20,6 +20,13 @@ yargs(process.argv.slice(2))
       requiresArg: true,
       type: 'string'
     },
+    exclude: {
+      alias: 'e',
+      default: [],
+      desc: '.properties files to exclude; should match the file path end',
+      requiresArg: true,
+      type: 'array'
+    },
     format: {
       alias: 'f',
       desc: "Command for Python code formatter. Set to '' to disable.",
@@ -38,10 +45,10 @@ yargs(process.argv.slice(2))
       requiresArg: true,
       type: 'string'
     },
-    ignore: {
+    include: {
       alias: 'i',
       default: [],
-      desc: '.properties files to ignore; should match the file path end',
+      desc: '.properties files to include; should match the file path end',
       requiresArg: true,
       type: 'array'
     },
