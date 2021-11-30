@@ -6,10 +6,36 @@ On the way there, it can also update `.js`, `.jsm` and `.xhtml` files that use t
 as well as writing a `.py` migration script for non-English locales.
 
 Because this migration includes a move from indexed to named placeholders/variables,
-it's run as a two-step process.
+it's run as a **two-step process**.
 On the first run, a `.migration.yaml` config file is generated next to each `.properties` file.
 This may then be manually verified and updated before running the same command again,
 which then applies the full migration.
+
+## TL;DR
+
+To best learn how all of this works, **play around with it!**
+Follow the install/setup instructions until this command runs successfully:
+
+```
+npx properties-to-ftl --help
+```
+
+Then, find a JS file in `mozilla-central` that uses e.g. `Services.strings.createBundle()`,
+and run:
+
+```
+npx properties-to-ftl path/to/file.jsm
+```
+
+Based on the CLI output,
+you might need to first `--include` or `--exclude` some `.properties` file paths
+and provide an `--ftl-path` argument in order to generate a `.migration.yaml` file
+next to its source `.properties` file.
+Open it and the `.js` or `.jsm` file in an editor,
+and see if you can resolve the `FIXME` comments.
+Then run the same CLI command again to apply your transformation.
+Sometimes, everything is already perfect,
+but often additional manual work is required to polish up the migration patch.
 
 ## Install & Setup
 
@@ -114,3 +140,49 @@ You will also need to manually make any necessary updates to `jar.mn` manifest f
 if a `.properties` file is removed.
 Migration config files should not be added to the soruce repository;
 they may be safely removed at the end of the migration.
+
+## Hacking It
+
+This is an imperfect tool, because there's a limit to how much it makes sense to automate it.
+If/when you encounter issues with it,
+you are invited and expected to gauge for yourself how much it's really helping you,
+and whether it might make sense to either 1) submit a PR with a fix or 2) just deal with it.
+
+In total, at the time of writing this, there are only about 5000 messages in properties files in mozilla-central,
+and many of the corner cases are relatively rarely used.
+So if you're encounter a problem,
+it may well be easier to fix it directly rather than improving this tool.
+
+Some specific situations are recognised:
+
+- Often moving from `.properties` to Fluent should include a switch from using
+  imperative formatting methods to e.g. DOM localization.
+  That's a transform that can't really be automated,
+  so the best we can do is provide a much more Fluent-ish base for your work.
+  Applying the transformation via the JS file should also allow for decent variable name mapping,
+  which you'd have to otherwise do manually.
+
+- Much of the code under `devtools/` is using custom wrappers for localization code.
+  While these wrappers are not directly supported,
+  but it's still possible to force the `properties-to-ftl` JS processor to transform at least the message keys
+  by adding a line like this to the file:
+
+  ```js
+  Services.strings.createBundle('chrome://fake/locale/foo/bar.properties')
+  ```
+
+  and as long as the `bar.properties` filename is unique,
+  literal key value strings in that file can get appropriately transformed
+
+- When migrating messages with plural forms,
+  the JS calls targeting the `PluralForm` global are not automatically migrated.
+  If such messages include `#1`/`#2` variables,
+  you need to include their mapping to Fluent variables manually
+  in the generated FTL file as well as the Python migration script,
+  and remove the wrapping JS code that applies `.replace("#1", ...)` transformations on the result.
+
+- When migrating messages that are used from C++,
+  you'll probably need to target the `.properties` file directly,
+  and manually fill out more variable names in the migration config.
+  Some examples for manually constructing the C++ arguments required by the `Localization` class are available in
+  [`TestLocalization.cpp`](https://searchfox.org/mozilla-central/source/intl/l10n/test/gtest/TestLocalization.cpp).
