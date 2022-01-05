@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk'
 import { extname } from 'path'
 import yargs from 'yargs'
 import { forEachPropertiesFile, getInfo } from './lib/get-info.js'
@@ -90,7 +91,15 @@ yargs(process.argv.slice(2))
   )
 
   .help()
+  .showHelpOnFail(
+    false,
+    chalk.dim(
+      `Use --help for available options.\nFor more information, see: https://github.com/mozilla/properties-to-ftl`
+    )
+  )
   .epilogue(
-    'For more information, see: https://github.com/mozilla/properties-to-ftl'
+    chalk.dim(
+      'For more information, see: https://github.com/mozilla/properties-to-ftl'
+    )
   )
   .parse()
