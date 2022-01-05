@@ -15,6 +15,12 @@ yargs(process.argv.slice(2))
       desc: 'When given a JS file, migrate all messages in .properties file',
       type: 'boolean'
     },
+    attrDot: {
+      alias: 'd',
+      default: 'last',
+      describe: 'Consider a dot in a property key to start an attribute name',
+      choices: ['first', 'last', 'none']
+    },
     bug: {
       alias: 'b',
       desc: 'Bugzilla bug id',
