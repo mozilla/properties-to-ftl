@@ -31,7 +31,7 @@ yargs(process.argv.slice(2))
     format: {
       alias: 'f',
       desc: "Command for Python code formatter. Set to '' to disable.",
-      default: 'python -m black',
+      default: './mach lint --fix',
       type: 'string'
     },
     ftlPath: {

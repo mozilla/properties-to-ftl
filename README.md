@@ -39,28 +39,7 @@ but often additional manual work is required to polish up the migration patch.
 
 ## Install & Setup
 
-### Node.js
-
-You will need `nodejs` (version 14 or greater) to effectively install and run this tool.
-It is recommended that you install `nodejs` via Node Version Manager (`nvm`) to avoid issues with permissions.
-
-The following are installation instructions to install `nodejs` through `nvm`:
-
-https://github.com/nvm-sh/nvm#installing-and-updating
-
-### Python
-
-The helper will generate a Python migration script for non-English locales.
-By default, this script will be formatted with [Black](https://black.readthedocs.io/en/stable/),
-which you may install with:
-
-```
-pip install black
-```
-
-To customize or disable the formatting, use the `--format` CLI argument.
-
-### Properties-to-Fluent
+You will need Node.js version 14 or greater to effectively install and run this tool.
 
 ```ini
 git clone https://github.com/mozilla/properties-to-ftl.git
@@ -71,7 +50,9 @@ npm link  # for npx
 
 After this setup, the script may be run from anywhere as `npx properties-to-ftl`.
 
-_Note_: If you are having troubles getting `npm link` to run due to invalid permissions, please see the `Node.js Setup` section above for troubleshooting.
+_Note_: If you are having troubles getting `npm link` to run due to invalid permissions,
+this is probably an issue with your system's Node.js installation,
+and it may be easiest to [install Node.js via Node Version Manager (`nvm`)](https://github.com/nvm-sh/nvm#installing-and-updating) to avoid such issues.
 
 ## Usage
 

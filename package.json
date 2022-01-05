@@ -22,8 +22,8 @@
   "scripts": {
     "clean": "git clean -fx test/artifacts && git restore test/artifacts",
     "test": "npm run test:dlu && npm run test:had",
-    "test:dlu": "cd test/artifacts && node ../../cli.js -p downloads.ftl -x downloads toolkit/mozapps/downloads/DownloadUtils.jsm",
-    "test:had": "cd test/artifacts && node ../../cli.js toolkit/mozapps/downloads/HelperAppDlg.jsm"
+    "test:dlu": "cd test/artifacts && node ../../cli.js -p downloads.ftl -x downloads -f 'python -m black' toolkit/mozapps/downloads/DownloadUtils.jsm",
+    "test:had": "cd test/artifacts && node ../../cli.js -f 'python -m black' toolkit/mozapps/downloads/HelperAppDlg.jsm"
   },
   "dependencies": {
     "@fluent/syntax": "^0.18.0",
