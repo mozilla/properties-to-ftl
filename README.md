@@ -11,48 +11,22 @@ On the first run, a `.migration.yaml` config file is generated next to each `.pr
 This may then be manually verified and updated before running the same command again,
 which then applies the full migration.
 
-## TL;DR
-
-To best learn how all of this works, **play around with it!**
-Follow the install/setup instructions until this command runs successfully:
-
-```
-npx properties-to-ftl --help
-```
-
-Then, find a JS file in `mozilla-central` that uses e.g. `Services.strings.createBundle()`,
-and run:
-
-```
-npx properties-to-ftl path/to/file.jsm
-```
-
-Based on the CLI output,
-you might need to first `--include` or `--exclude` some `.properties` file paths
-and provide an `--ftl-path` argument in order to generate a `.migration.yaml` file
-next to its source `.properties` file.
-Open it and the `.js` or `.jsm` file in an editor,
-and see if you can resolve the `FIXME` comments.
-Then run the same CLI command again to apply your transformation.
-Sometimes, everything is already perfect,
-but often additional manual work is required to polish up the migration patch.
-
 ## Install & Setup
 
-You will need Node.js version 14 or greater to effectively install and run this tool.
+You will need Node.js version 14 or greater to use this tool. Then:
 
-```ini
-git clone https://github.com/mozilla/properties-to-ftl.git
-cd properties-to-ftl
-npm install
-npm link  # for npx
+```
+npm install --global @mozilla/properties-to-ftl
 ```
 
-After this setup, the script may be run from anywhere as `npx properties-to-ftl`.
+After this, the script may be run from anywhere as `properties-to-ftl`.
+If you install it locally, use `npx properties-to-ftl` instead.
 
-_Note_: If you are having troubles getting `npm link` to run due to invalid permissions,
-this is probably an issue with your system's Node.js installation,
-and it may be easiest to [install Node.js via Node Version Manager (`nvm`)](https://github.com/nvm-sh/nvm#installing-and-updating) to avoid such issues.
+To verify that setup was successful and see a list of command-line options, run:
+
+```
+properties-to-ftl --help
+```
 
 ## Usage
 
@@ -88,10 +62,10 @@ which then applies the full migration.
 
 ### Command-line arguments
 
-For full usage, run this somewhere in `mozilla-central`:
+For full usage, run this command:
 
 ```ini
-npx properties-to-ftl --help
+properties-to-ftl --help
 ```
 
 When targeting a JS file, it is parsed for `chrome://` references to `.properties` and `.xhtml` files,
@@ -121,6 +95,124 @@ You will also need to manually make any necessary updates to `jar.mn` manifest f
 if a `.properties` file is removed.
 Migration config files should not be added to the soruce repository;
 they may be safely removed at the end of the migration.
+
+## Tutorials
+
+To best learn how all of this works, **play around with it!**
+Follow the setup instructions,
+then find a JS file in `mozilla-central` that calls `Services.strings.createBundle()`,
+and run:
+
+```
+properties-to-ftl path/to/file.jsm
+```
+
+Based on the CLI output,
+you might need to first `--include` or `--exclude` some `.properties` file paths
+and provide an `--ftl-path` argument in order to generate a `.migration.yaml` file
+next to its source `.properties` file.
+Open it and the `.js` or `.jsm` file in an editor,
+and see if you can resolve the `FIXME` comments.
+Then run the same CLI command again to apply your transformation.
+Sometimes, everything is already perfect,
+but often additional manual work is required to polish up the migration patch.
+
+### An Example Migration
+
+As an example, the file `browser/locales/en-US/chrome/browser/feeds/subscribe.properties`
+[currently](https://searchfox.org/mozilla-central/rev/131f3af9a49d2203adb7b7ef30dcc37c9f1aa10b/browser/locales/en-US/chrome/browser/feeds/subscribe.properties) contains these messages:
+
+```properties
+addProtocolHandlerMessage=Add “%1$S” as an application for %2$S links?
+addProtocolHandlerAddButton=Add application
+addProtocolHandlerAddButtonAccesskey=A
+```
+
+Running the following command will generate a config file `subscribe.migration.yaml` next to it:
+
+```sh
+properties-to-ftl --ftl-path protocolhandler.ftl \
+  browser/locales/en-US/chrome/browser/feeds/subscribe.properties
+```
+
+```yaml
+meta:
+  bug: xxxxxx # FIXME
+  title: Convert subscribe.properties to Fluent
+
+ftl:
+  root: browser/locales/en-US
+  path: protocolhandler.ftl
+
+migrate:
+  addProtocolHandlerMessage: # Add “%1$S” as an application for %2$S links?
+    key: add-protocol-handler-message
+    varNames:
+      - var1 # FIXME
+      - var2 # FIXME
+
+  addProtocolHandlerAddButton: # Add application
+    key: add-protocol-handler-add-button
+
+  addProtocolHandlerAddButtonAccesskey: # A
+    key: add-protocol-handler-add-button-accesskey
+```
+
+For a proper migration, a few things ought to be fixed here:
+
+- The bug id needs to be included; this'll be a part of the generated Python migration script's filename.
+- The `add-protocol-handler-message` variable names need to be specified.
+  In many cases, if the command is run against a `.js` or `.jsm` file, these can be autodetected.
+  In this case, based on an inspection of [WebProtocolHandlerRegistrar.jsm](https://searchfox.org/mozilla-central/rev/131f3af9a49d2203adb7b7ef30dcc37c9f1aa10b/browser/components/protocolhandler/WebProtocolHandlerRegistrar.jsm),
+  these should probably be `host` and `protocol`.
+- The access key ought to be an attribute rather than a separate message.
+
+After these changes, the migration config will look like this:
+
+```yaml
+meta:
+  bug: 123456
+  title: Convert subscribe.properties to Fluent
+
+ftl:
+  root: browser/locales/en-US
+  path: protocolhandler.ftl
+
+migrate:
+  addProtocolHandlerMessage: # Add “%1$S” as an application for %2$S links?
+    key: add-protocol-handler-message
+    varNames:
+      - host
+      - protocol
+
+  addProtocolHandlerAddButton: # Add application
+    key: add-protocol-handler-add-button
+
+  addProtocolHandlerAddButtonAccesskey: # A
+    key: add-protocol-handler-add-button
+    attr: accesskey
+```
+
+Now running the `properties-to-ftl` command again:
+
+```
+properties-to-ftl browser/locales/en-US/chrome/browser/feeds/subscribe.properties
+```
+
+finds the config file, and generates a new `protocolhandler.ftl`:
+
+```ftl
+add-protocol-handler-message = Add “{ $host }” as an application for { $protocol } links?
+add-protocol-handler-add-button = Add application
+    .accesskey = A
+```
+
+as well as a corresponding `bug_123456_protocolhandler.py` migration script for other locales.
+
+**NOTE:** If these commands were run against `WebProtocolHandlerRegistrar.jsm`
+(The only JS file that uses these messages) instead of `subscribe.properties`,
+that would have modified its source as well,
+automating some of the changes needed there and marking the rest with `/* L10N-FIXME */` comments.
 
 ## Hacking It
 
