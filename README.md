@@ -259,3 +259,20 @@ Some specific situations are recognised:
   and manually fill out more variable names in the migration config.
   Some examples for manually constructing the C++ arguments required by the `Localization` class are available in
   [`TestLocalization.cpp`](https://searchfox.org/mozilla-central/source/intl/l10n/test/gtest/TestLocalization.cpp).
+
+## Development
+
+If you do find a reason to fix/improve this tool,
+please do file a PR to this repository with your work.
+
+When getting started you'll need to run:
+
+```
+git submodule update --init
+npm install
+```
+
+The `resolve-chrome-uri` dependency is vendored in as a git submodule
+because it's honestly too hacky to release for wider use.
+
+The "tests" that are included are a couple of example migration files.
