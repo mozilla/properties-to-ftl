@@ -1,15 +1,18 @@
 {
-  "name": "properties-to-ftl",
+  "name": "@mozilla/properties-to-ftl",
   "version": "0.0.1",
   "private": true,
   "description": "Migrate strings from .properties to Fluent in mozilla-central",
   "author": "Eemeli Aro <eemeli@mozilla.com>",
   "license": "MPL-2.0",
-  "bin": "cli.js",
+  "bin": {
+    "properties-to-ftl": "cli.js"
+  },
   "type": "module",
   "files": [
     "cli.js",
-    "lib/"
+    "lib/",
+    "resolve-chrome-uri/*.js"
   ],
   "repository": {
     "type": "git",
@@ -22,16 +25,16 @@
   "scripts": {
     "clean": "git clean -fx test/artifacts && git restore test/artifacts",
     "test": "npm run test:dlu && npm run test:had",
-    "test:dlu": "cd test/artifacts && node ../../cli.js -p downloads.ftl -x downloads toolkit/mozapps/downloads/DownloadUtils.jsm",
-    "test:had": "cd test/artifacts && node ../../cli.js toolkit/mozapps/downloads/HelperAppDlg.jsm"
+    "test:dlu": "cd test/artifacts && node ../../cli.js -p downloads.ftl -x downloads -f 'python -m black' toolkit/mozapps/downloads/DownloadUtils.jsm",
+    "test:had": "cd test/artifacts && node ../../cli.js -f 'python -m black' toolkit/mozapps/downloads/HelperAppDlg.jsm"
   },
   "dependencies": {
     "@fluent/syntax": "^0.18.0",
     "acorn": "^8.5.0",
+    "chalk": "^5.0.0",
     "dot-properties": "^1.0.1",
     "lodash.kebabcase": "^4.1.1",
     "recast": "^0.20.5",
-    "resolve-chrome-uri": "github:eemeli/resolve-chrome-uri",
     "safe-identifier": "^0.4.2",
     "yaml": "^2.0.0-8",
     "yargs": "^17.1.1"

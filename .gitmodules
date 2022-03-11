@@ -1,0 +1,4 @@
+[submodule "resolve-chrome-uri"]
+	path = resolve-chrome-uri
+	url = https://github.com/eemeli/resolve-chrome-uri.git
+	branch = main
