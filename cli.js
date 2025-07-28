@@ -45,7 +45,7 @@ yargs(process.argv.slice(2))
       },
       ftlPath: {
         alias: 'p',
-        desc: 'Path to target FTL file',
+        desc: 'Path to target FTL file, using / as separator',
         requiresArg: true,
         type: 'string'
       },
