@@ -1,6 +1,6 @@
 {
   "name": "@mozilla/properties-to-ftl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Migrate strings from .properties to Fluent in mozilla-central",
   "author": "Eemeli Aro <eemeli@mozilla.com>",
   "license": "MPL-2.0",
